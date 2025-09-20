@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Basement\Sms;
 
 use Basement\Sms\Filament\SmsMessageResource;
+use Basement\Sms\Filament\Widgets\SmsRecipientStats;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
@@ -24,6 +25,9 @@ final class FilamentSmsPlugin implements Plugin
     {
         $panel->resources([
             SmsMessageResource::class,
+        ]);
+        $panel->widgets([
+            SmsRecipientStats::make(),
         ]);
     }
 
