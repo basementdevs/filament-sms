@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Basement\Sms\Models;
 
+use Basement\Sms\Database\Factories\SmsMessageFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -60,5 +61,10 @@ final class SmsMessage extends Model
     public function events(): HasMany
     {
         return $this->hasMany(SmsMessageEvent::class, 'sms_message_id');
+    }
+
+    protected static function newFactory(): SmsMessageFactory
+    {
+        return SmsMessageFactory::new();
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Basement\Sms\Database\Factories;
 
 use Basement\Sms\Enums\SmsEventType;
+use Basement\Sms\Models\SmsMessage;
 use Basement\Sms\Models\SmsMessageEvent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,6 +16,7 @@ final class SmsMessageEventFactory extends Factory
     public function definition(): array
     {
         return [
+            'sms_message_id' => SmsMessage::factory(),
             'type' => $this->faker->randomElement(SmsEventType::cases()),
             'payload' => [],
             'occurred_at' => now(),

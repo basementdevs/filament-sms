@@ -6,6 +6,7 @@ namespace Basement\Sms\Database\Factories;
 
 use Basement\Sms\Models\SmsMessage;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 final class SmsMessageFactory extends Factory
 {
@@ -14,13 +15,33 @@ final class SmsMessageFactory extends Factory
     public function definition(): array
     {
         return [
-            'content' => json_encode([
-                'recipient_phone_number' => '+1234567890',
-                'content' => 'test',
-                'from_phone_number' => '+0987654321',
-            ]),
+            'id' => $this->faker->uuid(),
             'notification_class' => self::class,
-            'quota_usage' => 0,
+            'external_reference_id' => $this->faker->unique()->uuid(),
+            'content' => json_encode([
+                'recipient_phone_number' => $this->faker->phoneNumber(),
+                'content' => $this->faker->sentence(),
+                'from_phone_number' => $this->faker->phoneNumber(),
+            ]),
+            'recipient_number' => $this->faker->phoneNumber(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
+    }
+
+    public function withRecipient(Model $model): self
+    {
+        return $this->state(fn () => [
+            'recipient_id' => $model->getKey(),
+            'recipient_type' => $model::class,
+        ]);
+    }
+
+    public function withRelated(Model $model): self
+    {
+        return $this->state(fn () => [
+            'related_id' => $model->getKey(),
+            'related_type' => $model::class,
+        ]);
     }
 }
