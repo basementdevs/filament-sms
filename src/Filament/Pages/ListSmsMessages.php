@@ -7,6 +7,9 @@ namespace Basement\Sms\Filament\Pages;
 use Basement\Sms\Filament\SmsMessageResource;
 use Basement\Sms\Filament\Widgets\SmsRecipientStats;
 use Basement\Sms\Models\SmsMessage;
+use Filament\Actions\Action;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Colors\Color;
@@ -45,6 +48,28 @@ final class ListSmsMessages extends ListRecords
         }
 
         return $tabs;
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('sendAdhocSms')
+                ->label('Send SMS')
+                ->action(function (array $data) {
+                    $phone = mb_trim($data['phone']);
+                    $message = mb_trim(strip_tags($data['message']));
+                    $content = mb_substr($message, 0, 160);
+                })
+                ->schema([
+                    TextInput::make('phone')
+                        ->label('Phone (E.164)')
+                        ->required(),
+                    RichEditor::make('message')
+                        ->label('Message')
+                        ->required(),
+                ]),
+        ];
+
     }
 
     protected function getModelColor(string $state): array
