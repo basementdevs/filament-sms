@@ -19,11 +19,11 @@ final class SmsMessageFactory extends Factory
             'notification_class' => self::class,
             'external_reference_id' => $this->faker->unique()->uuid(),
             'content' => json_encode([
-                'recipient_phone_number' => $this->faker->PhoneNumber(),
+                'recipient_phone_number' => $this->faker->phoneNumber(),
                 'content' => $this->faker->sentence(),
-                'from_phone_number' => $this->faker->PhoneNumber(),
+                'from_phone_number' => $this->faker->phoneNumber(),
             ]),
-            'recipient_number' => $this->faker->PhoneNumber(),
+            'recipient_number' => $this->faker->phoneNumber(),
             'created_at' => now(),
             'updated_at' => now(),
         ];
@@ -31,22 +31,17 @@ final class SmsMessageFactory extends Factory
 
     public function withRecipient(Model $model): self
     {
-        return $this->state(fn ( ) =>
-             [
-                'recipient_id' => $model->getKey(),
-                'recipient_type' => $model::class,
-            ]
-        );
+        return $this->state(fn () => [
+            'recipient_id' => $model->getKey(),
+            'recipient_type' => $model::class,
+        ]);
     }
 
     public function withRelated(Model $model): self
     {
-        return $this->state(fn ( ) =>
-            [
-                'related_id' => $model->getKey(),
-                'related_type' => $model::class,
-            ]
-        );
+        return $this->state(fn () => [
+            'related_id' => $model->getKey(),
+            'related_type' => $model::class,
+        ]);
     }
-
 }

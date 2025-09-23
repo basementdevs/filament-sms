@@ -43,13 +43,14 @@ final class ListSmsMessages extends ListRecords
                 ->badgeColor($this->getModelColor($type))
                 ->query(fn () => SmsMessage::where('recipient_type', $type));
         }
+
         return $tabs;
     }
+
     protected function getModelColor(string $state): array
     {
         $color = '#'.mb_substr(md5($state), 0, 6);
 
         return Color::hex($color);
     }
-
 }

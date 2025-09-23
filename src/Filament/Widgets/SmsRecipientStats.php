@@ -1,16 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Basement\Sms\Filament\Widgets;
 
 use Basement\Sms\Models\SmsMessage;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-class SmsRecipientStats extends StatsOverviewWidget
+
+final class SmsRecipientStats extends StatsOverviewWidget
 {
     protected function getStats(): array
     {
         return $this->getSmsRecipientStats();
+    }
+
+    protected function getModelColor(string $state): array
+    {
+        $color = '#'.mb_substr(md5($state), 0, 6);
+
+        return Color::hex($color);
     }
 
     private function getSmsRecipientStats(): array
@@ -25,17 +35,11 @@ class SmsRecipientStats extends StatsOverviewWidget
         foreach ($recipientTypes as $type) {
             $count = SmsMessage::where('recipient_type', $type)->count();
             $percentage = $totalSmsMessages > 0 ? round(($count / $totalSmsMessages) * 100, 2) : 0;
-            $stats[] = Stat::make(class_basename($type),"{$percentage}%")
+            $stats[] = Stat::make(class_basename($type), "{$percentage}%")
                 ->color($this->getModelColor($type))
                 ->description("{$count} of {$totalSmsMessages} messages");
         }
+
         return $stats;
-    }
-
-    protected function getModelColor(string $state): array
-    {
-        $color = '#'.mb_substr(md5($state), 0, 6);
-
-        return Color::hex($color);
     }
 }
