@@ -17,9 +17,10 @@
     ],
     "require": {
         "php": "^8.3",
-        "spatie/laravel-package-tools": "^1.16",
+        "filament/filament": "^4.0",
         "illuminate/contracts": "^12.0",
-        "filament/filament": "^4.0"
+        "spatie/laravel-package-tools": "^1.16",
+        "ysfkaya/filament-phone-input": "^4.0"
     },
     "require-dev": {
         "laravel/pint": "^1.14",

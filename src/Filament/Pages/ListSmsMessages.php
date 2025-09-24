@@ -7,12 +7,13 @@ namespace Basement\Sms\Filament\Pages;
 use Basement\Sms\Filament\SmsMessageResource;
 use Basement\Sms\Filament\Widgets\SmsRecipientStats;
 use Basement\Sms\Models\SmsMessage;
+use Basement\Sms\Notifications\AdhocSmsNotification;
 use Filament\Actions\Action;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Colors\Color;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 final class ListSmsMessages extends ListRecords
 {
@@ -57,14 +58,16 @@ final class ListSmsMessages extends ListRecords
                 ->label('Send SMS')
                 ->action(function (array $data) {
                     $phone = mb_trim($data['phone']);
-                    $message = mb_trim(strip_tags($data['message']));
+                    $message = $data['message'];
                     $content = mb_substr($message, 0, 160);
+                    auth()->user()->notify(new AdhocSmsNotification($phone, $content));
                 })
                 ->schema([
-                    TextInput::make('phone')
+                    PhoneInput::make('phone')
                         ->label('Phone (E.164)')
+                        ->strictMode(true)
                         ->required(),
-                    RichEditor::make('message')
+                    Textarea::make('message')
                         ->label('Message')
                         ->required(),
                 ]),

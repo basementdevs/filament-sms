@@ -9,10 +9,13 @@ use Illuminate\Notifications\Notification;
 
 final class AdhocSmsNotification extends Notification
 {
+    protected string $phone;
+
     protected string $content;
 
-    public function __construct(string $content)
+    public function __construct(string $phone, string $content)
     {
+        $this->phone = $phone;
         $this->content = $content;
     }
 
@@ -23,6 +26,6 @@ final class AdhocSmsNotification extends Notification
 
     public function toSms(object $notifiable): TwilioMessage
     {
-        return TwilioMessage::make($notifiable)->content($this->content);
+        return TwilioMessage::make($notifiable)->to($this->phone)->content($this->content);
     }
 }
