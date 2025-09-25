@@ -11,7 +11,7 @@ final class TwilioMessage
         private ?string $content = null,
         private ?string $from = null,
     ) {
-        $this->from = config('twilio-notification-channel.from');
+        $this->from = config('filament-sms.twilio.from');
     }
 
     public static function make(object $notifiable): static
