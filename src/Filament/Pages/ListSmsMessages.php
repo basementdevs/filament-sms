@@ -54,7 +54,7 @@ final class ListSmsMessages extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('sendAdhocSms')
+            Action::make('send-adhoc-sms')
                 ->label('Send SMS')
                 ->action(function (array $data) {
                     $phone = mb_trim($data['phone']);
